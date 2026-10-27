@@ -12,6 +12,31 @@ app.get('/req', (req, res) => {
     res.send('Yo!')
 })
 
+app.get('/bug', (req, res) => {
+    res.sand('Escreevndo o termo errado')
+})
+
+app.get('/pokemon', async (req, res) => {
+    const url_api = "https://pokeapi.co/api/v2/pokemon/ditto";
+    
+    try {
+        const resposta = await fetch(url_api);
+        
+        if (!resposta.ok) {
+            return res.status(resposta.status).json({ erro: 'Erro na rede ao acessar a PokeAPI' });
+        }
+        
+        const dados = await resposta.json();
+        res.json(dados); // Envia os dados do Ditto de volta para quem chamou este endpoint
+    } catch (erro) {
+        console.error('Houve um problema ao buscar a API:', erro);
+        res.status(500).json({ erro: 'Erro interno no servidor' });
+    }
+});
+
+
+
+
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
 
